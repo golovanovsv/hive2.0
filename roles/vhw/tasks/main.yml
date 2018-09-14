@@ -1,0 +1,22 @@
+- name: Create a virtual machine from Template and customize
+  vmware_guest:
+    hostname: "{{ vCenter.ip }}"
+    username: "{{ vCenter.username }}"
+    password: "{{ vCenter.password }}"
+    validate_certs: "{{ vCenter.realcert }}"
+    datacenter: "{{ vCenter.Datacenter }}"
+    cluster: "{{ vCenter.Cluster }}"
+    folder: "{{ vCenter.Folder }}"
+    name: "{{ inventory_hostname }}"
+    template: "{{ vCenter.Template }}"
+    state: poweredon
+    hardware:
+      memory_mb: "{{ vMachineTemplate[vTmpl]['memory'] }}"
+      num_cpus: "{{ vMachineTemplate[vTmpl]['cores'] }}"
+    disk: "{{ vMachineTemplate[vTmpl]['disks'] }}"
+    networks: "{{ vMachineTemplate[vTmpl]['networks'] }}"
+    customization:
+      hostname: "{{ inventory_hostname }}"
+      domain: "weburg.tv"
+  when: vHW and lookup('vars', 'create_vms', default=False)
+  delegate_to: localhost

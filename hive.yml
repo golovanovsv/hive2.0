@@ -1,0 +1,13 @@
+---
+- hosts: hive
+  gather_facts: False
+  ignore_errors: True
+  roles:
+    - vhw
+  vars_files:
+    - "{{ inventory_dir }}/vhw_credentials.yml"
+    - "{{ inventory_dir }}/vhw_config.yml"
+  tags:
+    - vhw
+  vars:
+    create: "{{ create_vms }}"

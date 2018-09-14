@@ -1,0 +1,13 @@
+[hive:children]
+ku_masters
+ku_nodes
+
+[ku_masters]
+x0.weburg.tv    vHW=true vTmpl=ku_master
+x1.weburg.tv    vHW=true vTmpl=ku_node
+x2.weburg.tv    vHW=true vTmpl=ku_node
+
+[ku_nodes]
+ceph0.weburg.tv vHW=true vTmpl=ku_node
+ceph1.weburg.tv vHW=true vTmpl=ku_node
+ceph2.weburg.tv vHW=true vTmpl=ku_node
