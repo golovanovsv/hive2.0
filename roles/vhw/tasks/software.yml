@@ -1,0 +1,6 @@
+- name: "Common software install"
+  apt:
+    name={{ item }}
+    state=latest
+  with_items: {{ common_software }}
+  when: ansible_os_family == "Debian"

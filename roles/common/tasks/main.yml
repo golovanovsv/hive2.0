@@ -1,0 +1,2 @@
+- name: "Common software install and settings"
+  include_tasks: software.yml

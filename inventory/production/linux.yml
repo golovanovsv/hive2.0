@@ -1,0 +1,17 @@
+common_software:
+  - mc
+  - gawk
+  - zsh
+  - wget
+  - curl
+  - vim
+  - htop
+  - tshark
+  - ca-certificates
+  - apt-transport-https
+  - bridge-utils
+  - ntp_date
+  - jq
+
+common_software_debs:
+  - "https://github.com/sharkdp/bat/releases/download/v0.7.0/bat_0.7.0_amd64.deb"
