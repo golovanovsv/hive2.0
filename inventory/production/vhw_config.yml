@@ -1,0 +1,44 @@
+# Connection options to vCenter
+vCenter:
+  ip: "{{ cloud_fqdn }}"
+  username: "{{ cloud_login }}"
+  password: "{{ cloud_pass }}"
+  realcert: False
+  Datacenter: "Extrim"
+  Cluster: "DEV"
+  Template: "linux-debian-9.5"
+  Folder: "/Extrim/vm/DEV/DIR.I5/DIR.I5.0"
+  Datastore: "deadpool"
+
+# Network options in vCenter
+# special simbols must be encoded to unicode
+vNetwork:
+  vlan8: "SR12%2f18 Border V8 Public-Servers"
+
+# Virtual mschines templates
+vMachineTemplate:
+  ku_master:
+    cores: 4
+    memory: 6144
+    disks:
+    - datastore: "{{ vCenter.Datastore }}"
+      size_gb: 30
+      type: thin
+    networks:
+    - name: "{{ vNetwork.vlan8 }}"
+      device_type: vmxnet3
+      type: dhcp
+  ku_node:
+    cores: 4
+    memory: 6144
+    disks:
+    - datastore: "{{ vCenter.Datastore }}"
+      size_gb: 20
+      type: thin
+    - datastore: "{{ vCenter.Datastore }}"
+      size_gb: 40
+      type: thin
+    networks:
+    - name: "{{ vNetwork.vlan8 }}"
+      device_type: vmxnet3
+      type: dhcp
