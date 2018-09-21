@@ -1,0 +1,71 @@
+- name: "Set DNS servers"
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+
+- name: "Set hostname"
+  hostname:
+    name: "{{ inventory_hostname }}"
+
+- name: "Common software install: Debian"
+  block:
+  - apt:
+      name={{ item }}
+      state=latest
+    loop: "{{ common_software }}"
+
+  - apt:
+      deb: "{{ item }}"
+    loop: "{{ common_software_debs }}"
+  when: ansible_os_family == "Debian"
+
+- name: "Check PIP2 installed"
+  stat:
+    path: "/usr/local/bin/pip2"
+  register: pip2_bin
+
+- name: "Check PIP3 installed"
+  stat:
+    path: "/usr/local/bin/pip3"
+  register: pip3_bin
+
+- set_fact:
+    pip2_installed: "{{ pip2_bin.stat.exists }}"
+    pip3_installed: "{{ pip3_bin.stat.exists }}"
+
+- name: "Install PIP"
+  block:
+    - name: "Download PIP installer"
+      get_url:
+        url: "https://bootstrap.pypa.io/get-pip.py"
+        dest: /tmp/get-pip.py
+
+    - name: "Install PIP2"
+      command: "python /tmp/get-pip.py"
+      when: not pip2_installed
+
+    - name: "Install PIP3"
+      command: "python3 /tmp/get-pip.py"
+      when: not pip3_installed
+
+    - name: "Clean up"
+      file:
+        path: "/tmp/get-pip.py"
+        state: absent
+  when: not (pip2_installed or pip3_installed)
+
+- name: "Common software install: Python"
+  pip:
+    name: "{{ item }}"
+  loop: "{{ common_software_python }}"
+
+- name: "Check zsh dir exist"
+  stat:
+    path: "/etc/zsh"
+  register: zsh_dir
+
+- name: "zsh settings"
+  get_url:
+    url: "{{ zsh_shared_config }}"
+    dest: "/etc/zsh/newuser.zshrc.recommended"
+  when: zsh_dir.stat.exists and zsh_dir.stat.isdir

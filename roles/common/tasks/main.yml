@@ -1,2 +1,8 @@
 - name: "Common software install and settings"
-  include_tasks: software.yml
+  include_tasks: linux.yml
+
+- name: "Users settings"
+  include_tasks: user.yml
+  loop: "{{ users }}"
+  loop_control:
+    loop_var: user
