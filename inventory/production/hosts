@@ -3,7 +3,7 @@ ku_masters
 ku_nodes
 
 [ku_masters]
-x0.weburg.tv    vHW=true vTmpl=ku_master
+x0.weburg.tv    vHW=true vTmpl=ku_node
 x1.weburg.tv    vHW=true vTmpl=ku_node
 x2.weburg.tv    vHW=true vTmpl=ku_node
 
@@ -11,3 +11,6 @@ x2.weburg.tv    vHW=true vTmpl=ku_node
 ceph0.weburg.tv vHW=true vTmpl=ku_node
 ceph1.weburg.tv vHW=true vTmpl=ku_node
 ceph2.weburg.tv vHW=true vTmpl=ku_node
+
+[test-hive]
+x0.weburg.tv

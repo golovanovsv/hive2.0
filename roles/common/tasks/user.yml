@@ -1,0 +1,26 @@
+- name: "Check choosen shell is exist"
+  stat:
+    path: "{{ user.shell }}"
+  register: shell_bin
+
+- name: "Create users"
+  user:
+    name: "{{ user.login }}"
+    shell: "{{ user.shell if shell_bin.stat.exists else '/bin/bash' }}"
+    state: present
+
+- name: "Create public keys"
+  template:
+    src: authorized_keys.j2
+    dest: "/home/{{ user.login }}/.ssh/authorized_keys"
+    mode: 0644
+    owner: "{{ user.login }}"
+    group: "{{ user.login }}"
+  when: user.id_pub is defined
+
+- name: "Copying configs"
+  get_url:
+    url: "{{ item.src }}"
+    dest: "/home/{{ user.login }}/{{ item.dst }}"
+  when: user.config is defined
+  loop: "{{ user.config }}"

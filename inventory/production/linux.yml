@@ -1,0 +1,44 @@
+dns_timeout: 1
+dns_servers_ipv4:
+  - "8.8.8.8"
+  - "8.8.4.4"
+
+dns_servers_ipv6:
+- "2001:4860:4860::8888"
+- "2001:4860:4860::4488"
+
+common_software:
+  - apt-transport-https
+  - bridge-utils
+  - ca-certificates
+  - curl
+  - dnsutils
+  - gawk
+  - htop
+  - jq
+  - mc
+  - ntpdate
+  - sudo
+  - tshark
+  - python-pip
+  - zsh
+  - wget
+  - vim
+
+common_software_debs:
+  - "https://github.com/sharkdp/bat/releases/download/v0.7.0/bat_0.7.0_amd64.deb"
+
+common_software_python: []
+
+zsh_shared_config: "https://raw.githubusercontent.com/golovanovsv/configs/master/.zshrc"
+
+users:
+  - login: "reptile"
+    shell: "/usr/bin/zsh"
+    config:
+      - src: "https://raw.githubusercontent.com/golovanovsv/configs/master/.zshrc"
+        dst: ".zshrc"
+    id_pub:
+      - "https://raw.githubusercontent.com/golovanovsv/configs/master/golovanovsv.pub"
+  - login: "ex3me"
+    shell: "/bin/bash"
