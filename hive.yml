@@ -12,10 +12,12 @@
   vars:
     create: "{{ create_vms }}"
 
-- hosts: all
-  gather_facts: false
+- hosts: hive
+  gather_facts: true
   become: yes
   roles:
-    - common
+    #- common
+    - docker
   vars_files:
     - "{{ inventory_dir }}/linux.yml"
+    - "{{ inventory_dir }}/docker.yml"

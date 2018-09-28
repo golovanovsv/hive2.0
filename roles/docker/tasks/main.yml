@@ -1,0 +1,40 @@
+# Добавляем ключик репозитория
+- name: "Add Docker’s repository official GPG key"
+  apt_key:
+    url: "https://download.docker.com/linux/debian/gpg"
+    state: present
+
+# Добавляем официальный репозиторий
+- name: "Add Docker repository"
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
+    state: present
+
+# Установка последней стабильной версии docker
+- name: "Install docker-ce (latest version)"
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - docker-ce
+
+- name: "Make daemon.json"
+  template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+  notify: restart docker
+
+# Устанавливаем docker-compose из PIP
+- name: "Install docker-compose over PIP (latest version)"
+  pip:
+    name: "docker-compose"
+    state: present
+
+# Добавляем пользователей в грппу docker
+- name: "Add users to group docker"
+  user:
+    name: "{{ item.login }}"
+    append: true
+    group: docker
+  loop: "{{ users }}"
