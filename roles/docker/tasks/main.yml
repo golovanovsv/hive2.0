@@ -19,6 +19,12 @@
   with_items:
     - docker-ce
 
+- name: "Make daemon.json"
+  template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+  notify: restart docker
+
 # Устанавливаем docker-compose из PIP
 - name: "Install docker-compose over PIP (latest version)"
   pip:

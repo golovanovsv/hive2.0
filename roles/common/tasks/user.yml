@@ -22,5 +22,7 @@
   get_url:
     url: "{{ item.src }}"
     dest: "/home/{{ user.login }}/{{ item.dst }}"
+    owner: "{{ user.login }}"
+    group: "{{ user.login }}"
   when: user.config is defined
   loop: "{{ user.config }}"
