@@ -13,4 +13,4 @@ ceph1.weburg.tv vHW=true vTmpl=ku_node
 ceph2.weburg.tv vHW=true vTmpl=ku_node
 
 [test-hive]
-x0.weburg.tv
+x2.weburg.tv

@@ -1,0 +1,38 @@
+- stat:
+    path: "{{ etcd_datadir }}"
+  register: etcd_dir
+
+- set_fact:
+    etcd_entry: "{{ ansible_hostname }}=http://{{ ansible_default_ipv4.address }}:2380"
+    etcd_cluster_state: "{{ 'existing' if true in ansible_play_hosts | map('extract',hostvars, ['etcd_dir', 'stat', 'exists']) | list else 'new' }}"
+
+- set_fact:
+    initial_cluster_members: "{{ ansible_play_hosts | map('extract',hostvars, 'etcd_entry') | list | join(',') }}"
+
+- name: "Starting ETCD"
+  docker_container:
+    name: "etcd-{{ ansible_hostname }}"
+    image: "quay.io/coreos/etcd"
+    state: started
+    restart_policy: on-failure
+    network_mode: host
+    ports:
+      - "2379:2379"
+      - "2380:2380"
+    volumes:
+      - "{{ etcd_datadir }}:/data"
+      - "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt"
+    command: "etcd --name {{ ansible_hostname }}
+      --data-dir /data
+      --listen-client-urls http://{{ ansible_default_ipv4.address }}:2379,http://127.0.0.1:2379
+      --advertise-client-urls http://{{ ansible_default_ipv4.address }}:2379
+      --listen-peer-urls http://{{ ansible_default_ipv4.address }}:2380
+      --initial-cluster {{ initial_cluster_members }}
+      --initial-advertise-peer-urls http://{{ ansible_default_ipv4.address }}:2380
+      --initial-cluster-token {{ etcd_secret_token }}
+      --initial-cluster-state {{ etcd_cluster_state }}"
+
+#  TO DO: Modify cluster size
+#- command: "docker exec etcd-{{ ansible_hostname }} etcdctl member add {{ ansible_hostname }} http://{{ ansible_default_ipv4.address }}:2380"
+#  when: not etcd_dir.stat.exists and etcd_cluster_state == "existing"
+#  delegate_to:

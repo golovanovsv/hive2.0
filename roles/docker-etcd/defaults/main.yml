@@ -1,0 +1,2 @@
+etcd_datadir: /tmp/etcd-data
+etcd_secret_token: a7221303-73c7-4a5a-93d2-efb20211b5c9
