@@ -7,8 +7,6 @@
   vars_files:
     - "{{ inventory_dir }}/vhw_credentials.yml"
     - "{{ inventory_dir }}/vhw_config.yml"
-  tags:
-    - vhw
   vars:
     create: "{{ create_vms }}"
 
@@ -16,8 +14,16 @@
   gather_facts: true
   become: yes
   roles:
-    #- common
+    - common
     - docker
   vars_files:
     - "{{ inventory_dir }}/linux.yml"
     - "{{ inventory_dir }}/docker.yml"
+  vars:
+    create: "{{ create_vms }}"
+
+- hosts: ku_masters
+  gather_facts: true
+  become: yes
+  roles:
+    - docker-etcd
