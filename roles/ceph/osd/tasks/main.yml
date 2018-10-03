@@ -1,0 +1,18 @@
+- name: "Starting Ceph OSD"
+  docker_container:
+    name: "ceph-osd-{{ ansible_hostname }}"
+    image: "ceph/daemon"
+    state: started
+    restart_policy: on-failure
+    privileged: true
+    network_mode: host
+    pid_mode: host
+    volumes:
+      - /dev/:/dev/
+    env:
+      OSD_DEVICE: /dev/sdb
+      OSD_TYPE: disk
+      OSD_BLUESTORE: "1"
+      KV_TYPE: "etcd"
+      KV_IP: "212.49.103.46"
+    command: "osd"

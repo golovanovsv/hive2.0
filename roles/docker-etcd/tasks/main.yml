@@ -16,9 +16,6 @@
     state: started
     restart_policy: on-failure
     network_mode: host
-    ports:
-      - "2379:2379"
-      - "2380:2380"
     volumes:
       - "{{ etcd_datadir }}:/data"
       - "/etc/ssl/certs/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt"
