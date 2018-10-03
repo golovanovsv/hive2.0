@@ -1,0 +1,17 @@
+# Баг: автоматически не создает один из ключей
+# curl 'http://127.0.0.1:2379/v2/keys/ceph-config/ceph/client_host' -XPUT -d value=""
+- name: "Starting Ceph MON"
+  docker_container:
+    name: "ceph-mon-{{ ansible_hostname }}"
+    image: "ceph/daemon"
+    state: started
+    restart_policy: on-failure
+    network_mode: host
+    volumes:
+      - /var/lib/ceph:/var/lib/ceph
+    env:
+      MON_IP: "{{ ansible_default_ipv4.address }}"
+      CEPH_PUBLIC_NETWORK: "212.49.0.0/16"
+      KV_TYPE: "etcd"
+      KV_IP: "212.49.103.46"
+    command: "mon"

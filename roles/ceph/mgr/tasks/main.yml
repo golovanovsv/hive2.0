@@ -1,0 +1,14 @@
+- name: "Starting Ceph MGR"
+  docker_container:
+    name: "ceph-mgr-{{ ansible_hostname }}"
+    image: "ceph/daemon"
+    state: started
+    restart_policy: on-failure
+    network_mode: host
+    pid_mode: host
+    volumes:
+      - /var/lib/ceph:/var/lib/ceph
+    env:
+      KV_TYPE: "etcd"
+      KV_IP: "212.49.103.46"
+    command: "mgr"

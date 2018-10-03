@@ -1,0 +1,5 @@
+- hosts: ku_masters
+  gather_facts: true
+  become: yes
+  roles:
+    - docker-etcd

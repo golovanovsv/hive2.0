@@ -1,29 +1,6 @@
 ---
-- hosts: hive
-  gather_facts: false
-  ignore_errors: true
-  roles:
-    - vhw
-  vars_files:
-    - "{{ inventory_dir }}/vhw_credentials.yml"
-    - "{{ inventory_dir }}/vhw_config.yml"
-  vars:
-    create: "{{ create_vms }}"
-
-- hosts: hive
-  gather_facts: true
-  become: yes
-  roles:
-    - common
-    - docker
-  vars_files:
-    - "{{ inventory_dir }}/linux.yml"
-    - "{{ inventory_dir }}/docker.yml"
-  vars:
-    create: "{{ create_vms }}"
-
-- hosts: ku_masters
-  gather_facts: true
-  become: yes
-  roles:
-    - docker-etcd
+- import_playbook: books/hardware.yml
+- import_playbook: books/common.yml
+- import_playbook: books/etcd.yml
+- import_playbook: books/ceph.yml
+  tags: ['ceph']

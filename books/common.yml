@@ -1,0 +1,9 @@
+- hosts: hive
+  gather_facts: true
+  become: yes
+  roles:
+    - common
+    - docker
+  vars_files:
+    - "{{ inventory_dir }}/linux.yml"
+    - "{{ inventory_dir }}/docker.yml"
