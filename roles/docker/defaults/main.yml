@@ -1,1 +1,7 @@
-docker_conf: { "log-opts": {"max-size": "10m", "max-file": "5"} }
+docker_conf: {
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "10m",
+    "max-file": "5"
+  }
+}

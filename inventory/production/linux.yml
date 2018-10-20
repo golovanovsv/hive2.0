@@ -38,7 +38,12 @@ users:
     config:
       - src: "https://raw.githubusercontent.com/golovanovsv/configs/master/.zshrc"
         dst: ".zshrc"
+      - src: "https://raw.githubusercontent.com/golovanovsv/configs/master/config.json"
+        dst: ".docker/config.json"
     id_pub:
       - "https://raw.githubusercontent.com/golovanovsv/configs/master/golovanovsv.pub"
-  - login: "ex3me"
-    shell: "/bin/bash"
+  - login: "root"
+    shell: "/usr/bin/zsh"
+    config:
+      - src: "https://raw.githubusercontent.com/golovanovsv/configs/master/.zshrc"
+        dst: ".zshrc"
